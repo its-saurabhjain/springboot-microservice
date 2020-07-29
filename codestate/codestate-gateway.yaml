@@ -1,0 +1,39 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: codestate-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: codestate
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - codestate-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    - uri:
+        prefix: /test
+    - uri:
+        prefix: /codeToState
+        ignoreUriCase: true
+        queryParams: code
+    route:
+    - destination:
+        host: codestate
+        port:
+          number: 8080

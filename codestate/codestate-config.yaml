@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: codestate-config
+data:
+  SERVICE: dataservice
+  DATA_SERVICE_URL: http://codestatebackend.backend.svc:8080
